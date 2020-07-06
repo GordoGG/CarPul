@@ -76,7 +76,9 @@ signupForm.addEventListener("submit", (e)=>
                     ridesAsPassenger: [],
                     vehicles: [],
                     calification_passenger: 0,
-                    calification_driver: 0
+                    calification_driver: 0,
+                    currentRideAsDriver: "",
+                    currentRideAsPassenger: ""
                 }
             );
         })

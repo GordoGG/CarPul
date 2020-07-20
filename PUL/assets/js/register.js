@@ -44,11 +44,11 @@ signupForm.addEventListener("submit", (e)=>
         alert("Ambas contraseñas no coinciden. ")
         return false;
     }
-    else if( celular.length > 9 ){
+    else if( celular.length != 9 ){
         alert("El celular ingresado es incorrecto. ")
         return false;
     }
-    else if( dni.length > 8 ){
+    else if( dni.length != 8 ){
         alert("El DNI ingresado es incorrecto. ")
         return false;
     }
@@ -76,9 +76,12 @@ signupForm.addEventListener("submit", (e)=>
                     ridesAsPassenger: [],
                     vehicles: [],
                     calification_passenger: 0,
+                    number_califications_passenger: 0,
                     calification_driver: 0,
+                    number_califications_driver: 0,
                     currentRideAsDriver: "",
-                    currentRideAsPassenger: ""
+                    currentRideAsPassenger: "",
+                    lastRide: ""
                 }
             );
         })

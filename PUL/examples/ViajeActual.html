@@ -87,6 +87,23 @@
       </div>
     </div>
     <div class="main-panel">
+      <!-- Navbar -->
+      <nav class="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top " id="navigation-example">
+        <div class="container-fluid">
+          <div class="navbar-wrapper">
+            <a class="navbar-brand" href="javascript:void(0)">Viaje Actual</a>
+          </div>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation" data-target="#navigation-example">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="navbar-toggler-icon icon-bar"></span>
+            <span class="navbar-toggler-icon icon-bar"></span>
+            <span class="navbar-toggler-icon icon-bar"></span>
+          </button>
+          <div class="collapse navbar-collapse justify-content-end">
+          </div>
+        </div>
+      </nav>
+      <!-- End Navbar -->
       <div class="content">
 
         <div class="d-flex justify-content-center text-danger">
@@ -115,11 +132,14 @@
                   </ul>
                   <h5 class="card-title" id="pasajeros">Pasajeros</h4>
                   <ul id="passengers">
+                    <!-- <li>Pasajero 1 <p id="calificarPasajero">Calficiacion: 5 <span class="fa fa-car"></span></p></li> -->
                   </ul>
                 </div>
                 <div class="card-footer">
                   <div class="stats">
-                    <h5 id="nombreConductor">Nombre del conductor</h5>
+                    <h5 id="nombreConductor">Nombre del conductor>
+                      <p id="calificacionConduc">Calificacion: 5 <span class="fa fa-car"></span></p></span>
+                    </h5>
                   </div>
                   <button id="finish" class="btn btn-orange pull-right">Finalizar Viaje</button>
                 </div>

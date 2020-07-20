@@ -19,7 +19,9 @@ auth.onAuthStateChanged(function (user) {
             let ridesAsPassenger = user.ridesAsPassenger;
             let names = user.names;
             let last_names = user.last_names;
-            if (ridesAsDriver.length > 0 || ridesAsPassenger.legth > 0) 
+            console.log(ridesAsDriver.length);
+            console.log(ridesAsPassenger.length);
+            if (ridesAsDriver.length != 0 || ridesAsPassenger.legth != 0) 
             {
                 if (ridesAsDriver.length > 0) {
                     ridesAsDriver.forEach((ride) => {

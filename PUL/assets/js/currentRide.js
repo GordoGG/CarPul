@@ -20,8 +20,13 @@ auth.onAuthStateChanged(function(user) {
           let usuario = doc.data();
           let currentRideAsDriver = usuario.currentRideAsDriver;
           let currentRideAsPassenger = usuario.currentRideAsPassenger;
+          let lastRide = usuario.lastRide;
           let currentDrive = "";
           let role = "";
+          if(lastRide!="")
+          {
+            window.location.href = RATING_PAGE;
+          }
           if(currentRideAsDriver!="")
           {
               currentDrive = currentRideAsDriver;
@@ -36,7 +41,7 @@ auth.onAuthStateChanged(function(user) {
           {
               window.location.href = INDEX_PAGE;
           }
-          fetchData(currentDrive, role);
+          fetchData(doc.id, currentDrive, role);
       });
     } else 
     {
@@ -45,7 +50,7 @@ auth.onAuthStateChanged(function(user) {
   });
 
 
-  async function fetchData(ride_id, role)
+  async function fetchData(user_id, ride_id, role)
   {
       await db.collection(RIDES_COLLECTION).doc(ride_id).get()
       .then((doc)=>
@@ -88,18 +93,117 @@ auth.onAuthStateChanged(function(user) {
               addTextToElement("color", color);
           })
           db.collection(USERS_COLLECTION).doc(driver_id).get()
-          .then((document)=>
+          .then((conductor)=>
           {
-              let driver = document.data();
+              let driver = conductor.data();
               let names = driver.names;
               let last_names = driver.last_names;
               let fullName = names + " " + last_names;
+              let calification_driver = driver.calification_driver;
               addTextToElement("nombreConductor", "Conductor: "+fullName);
+              document.querySelector("#nombreConductor").appendChild(createCalificationElement(calification_driver));
           })
+          document.querySelector("#finish").addEventListener("click", ()=>
+          {
+              let message = confirm("¿Deseas finalizar este viaje?");
+              if(message)
+              {
+                  switch(role)
+                  {
+                      case ROLE_DRIVER:
+                          finishRideAsDriver(user_id, ride_id);
+                          break;
+                      case ROLE_PASSENGER:
+                          showProgress();
+                          finishRideAsPassenger(user_id, ride_id);
+                          break;
+                  }
+              }
+          });
       })
       .then(()=>
       {
           hideProgress();
+      });
+  }
+
+  async function finishRideAsDriver(user_id, ride_id)
+  {
+      await db.collection(RIDES_COLLECTION).doc(ride_id).get().then((doc)=>
+      {
+          let ride = doc.data();
+          let lastRide = ride_id+"-"+ROLE_DRIVER;
+          let passengers = ride.passengers;
+          passengers.forEach((passenger)=>
+          {
+              let lastRidePassenger = ride_id +"-"+ ROLE_PASSENGER;
+              updateCurrentRideAsPassengerForPassengers(passenger, lastRidePassenger);
+          });
+          db.collection(RIDES_COLLECTION).doc(ride_id).update(
+            {
+                isFinished: true,
+                isAvailable: false
+            }
+          ).then(()=>
+          {
+              db.collection(USERS_COLLECTION).doc(user_id).update(
+                  {
+                      currentRideAsDriver: "",
+                      lastRide: lastRide
+                  }
+              ).then(()=>
+              {
+                alert("Gracias por viajar con PUL");
+                hideProgress();
+                window.location.href = RATING_PAGE;
+              });
+          })
+      });
+  }
+
+  async function updateCurrentRideAsPassengerForPassengers(passenger_id, lastRide)
+  {
+      await db.collection(USERS_COLLECTION).doc(passenger_id).update(
+          {
+              currentRideAsPassenger: "",
+              lastRide: lastRide
+          }
+      ).then(()=>
+      {
+          console.log('Pasajero '+passenger_id + "Eliminado");
+      });
+  }
+
+  async function finishRideAsPassenger(user_id, ride_id)
+  {
+      await db.collection(RIDES_COLLECTION).doc(ride_id).get().then((doc)=>
+      {
+          let ride = doc.data();
+          let lastRide = doc.id + "-" +ROLE_PASSENGER;
+          let seats = ride.seats;
+          let isAvailable = ride.isAvailable;
+          if(isAvailable)
+          {
+              seats = seats + 1;
+          }
+          db.collection(RIDES_COLLECTION).doc(ride_id).update(
+              {
+                  seats: seats,
+                  passengers: firebase.firestore.FieldValue.arrayRemove(user_id)
+              }
+          ).then(()=>
+          {
+              db.collection(USERS_COLLECTION).doc(user_id).update(
+                  {
+                      currentRideAsPassenger: "",
+                      lastRide: lastRide
+                  }
+              ).then(()=>
+              {
+                  window.location.href = RATING_PAGE;
+                  hideProgress();
+              })
+          });
       });
   }
 
@@ -112,10 +216,12 @@ auth.onAuthStateChanged(function(user) {
           let names = passenger.names;
           let last_names = passenger.last_names;
           let fullName = names + " "+ last_names;
+          let calification = passenger.calification_passenger;
 
           //Creando el elemento en la lista
           let li = document.createElement("li");
           li.innerHTML = fullName;
+          li.appendChild(createCalificationElement(calification));
           list.appendChild(li);
       })
   }
@@ -124,8 +230,3 @@ auth.onAuthStateChanged(function(user) {
   {
       document.querySelector("#"+id).innerHTML = value;
   }
-/*var queryString = decodeURIComponent(window.location.search);
-queryString = queryString.substring(1);
-var queries = queryString.split("&");
-var ride = queries[0].split("=")[1];
-var role = queries[1].split("=")[1];*/

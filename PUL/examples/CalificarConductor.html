@@ -7,7 +7,7 @@
   <link rel="icon" type="image/png" href="../assets/img/logo.ico">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
   <title>
-    Buscar PUL
+    Calificacion
   </title>
   <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no'
     name='viewport' />
@@ -28,7 +28,43 @@
       background-color: #e09200;
       border-color: #ffbb29;
       box-shadow: 0 2px 2px 0 rgba(71, 43, 0, 0.692), 0 3px 1px -2px rgba(110, 82, 20, 0.808), 0 1px 5px 0 rgba(176, 139, 39, 0.12);
-    }   
+    }
+
+    #form {
+      width: 300px;
+      margin: 0 auto;
+      height: 150px;
+    }
+
+    #form p {
+      text-align: center;
+    }
+
+    #form label {
+      font-size: 150px;
+    }
+
+    input[type="radio"] {
+      display: none;
+    }
+
+    label {
+      color: grey;
+    }
+
+    .clasificacion {
+      direction: rtl;
+      unicode-bidi: bidi-override;
+    }
+
+    label:hover,
+    label:hover ~ label {
+      color: orange;
+    }
+
+    input[type="radio"]:checked ~ label {
+      color: orange;
+    }
   </style>
 </head>
 
@@ -47,7 +83,7 @@
         </a></div>
       <div class="sidebar-wrapper">
         <ul class="nav">
-          <li class="nav-item active  ">
+          <li class="nav-item">
             <a class="nav-link" href="./BuscarViaje.html">
               <i class="material-icons">drive_eta</i>
               <p>Buscar Viaje</p>
@@ -91,7 +127,7 @@
       <nav class="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top " id="navigation-example">
         <div class="container-fluid">
           <div class="navbar-wrapper">
-            <a class="navbar-brand" href="javascript:void(0)">Buscar Viaje</a>
+            <a class="navbar-brand" href="javascript:void(0)">Calificar Conductor o Pasajero/s</a>
           </div>
           <button class="navbar-toggler" type="button" data-toggle="collapse" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation" data-target="#navigation-example">
             <span class="sr-only">Toggle navigation</span>
@@ -105,100 +141,60 @@
       </nav>
       <!-- End Navbar -->
       <div class="content">
-
         <div class="d-flex justify-content-center text-danger">
-          <div class="spinner-border" style="width: 5rem; height: 5rem; color: orange;" style="visibility: visible;" role="status" id="progressBar">
+          <div class="spinner-border" style="width: 5rem; height: 5rem; color: orange;" role="status" id="progressBar">
             <span class="sr-only">Loading...</span>
           </div>
         </div>
-        <div id="no_rides" class="row" hidden>
-          <div class="col-xl-4 col-lg-12">
-            <div class="card card-chart">
-              <div class="card-header card-header-orange">
-                <div class="ct-chart" id="dailySalesChart"></div>
-              </div>
-              <div class="card-body">
-                <h4 class="card-title">No hay ofertas de viaje disponibles por el momento. Regresa luego para encontrar tu viaje ideal.</h4>
-              </div>
-              <div class="card-footer">
-                <button id="btnNoRides" class="btn btn-orange pull-right">Actualizar</button>
+        <div id="container_ride" class="container-fluid">
+          <div class="row" id="calificacionConductor" hidden>
+            <div class="col-xl-6 col-lg-12">
+              <div class="card card-chart">
+                <div class="card-header card-header-orange">
+                  <h4 class="card-title">Tu Viaje Finalizo<h4 id="role"></h4>  </h4> 
+                  <div class="ct-chart" id="dailySalesChart"></div>
+                </div>
+                <div class="card-body">
+                  <h5>Porfavor calificar al conductor del 1 al 5</h5>
+                  <form id="calificacionConduc">
+                    <p class="clasificacion" id="califConduc">
+                      <input id="radio1" type="radio" name="conductor" value="5">
+                      <label for="radio1" class="fa fa-car"></label>
+                      <input id="radio2" type="radio" name="conductor" value="4">
+                      <label for="radio2" class="fa fa-car"></label>
+                      <input id="radio3" type="radio" name="conductor" value="3">
+                      <label for="radio3" class="fa fa-car"></label>
+                      <input id="radio4" type="radio" name="conductor" value="2">
+                      <label for="radio4" class="fa fa-car"></label>
+                      <input id="radio5" type="radio" name="conductor" value="1">
+                      <label for="radio5" class="fa fa-car"></label>
+                    </p>
+                  </form>
+                </div>
+                <div class="card-footer">
+                  <div class="stats">
+                    <h5 id="nombreConductor">Nombre del conductor</h5>
+                  </div>
+                  <button id="rateDriver" class="btn btn-orange pull-right">Enviar Calificacion</button>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-
-        <div id="container_rides" class="container-fluid" style="visibility: hidden;">
-          <div class="row" hidden>
-            <div class="col-xl-4 col-lg-12">
+          <div class="row" id="calificacionPasajero" hidden>
+            <div class="col-xl-6 col-lg-12">
               <div class="card card-chart">
                 <div class="card-header card-header-orange">
+                  <h4 class="card-title">Tu Viaje Finalizo<h4 id="role"></h4>  </h4> 
                   <div class="ct-chart" id="dailySalesChart"></div>
                 </div>
-                <div class="card-body">
-                  <h4 class="card-title" id="direccion">Direccion</h4>
-                  <ul>
-                    <li id="modelo">Model del Vehiculo</li>
-                    <li id="placa">Placa del Vehiculo</li>
-                    <li id="color">Color de Vehiculo</li>
-                    <li id="horaSalida">Hora de salida</li>
-                    <li id="asientos">Asientos Disponibles</li>
-                    <li id="ubicacion">Ubicacion del Vehiculo</li>
-                  </ul>
+                <div id="card-passengers" class="card-body">
+                  <h5>Porfavor calificar al pasajero/s del 1 al 5</h5>
                 </div>
                 <div class="card-footer">
                   <div class="stats">
-                    <h5 id="nombreConductor">Nombre del conductor
-                      <p id="calificacionConduc">Calificacion: 5 <span class="fa fa-car"></span></p></span></h5>
+                    <h5 id="nombreConductorCardPassenger">Nombre del conductor</h5>
                   </div>
-                  <button class="btn btn-orange pull-right">Aceptar Viaje</button>
-                </div>
-              </div>
-            </div>
-            <div class="col-xl-4 col-lg-12">
-              <div class="card card-chart">
-                <div class="card-header card-header-orange">
-                  <div class="ct-chart" id="dailySalesChart"></div>
-                </div>
-                <div class="card-body">
-                  <h4 class="card-title" id="direccion">Direccion</h4>
-                  <ul>
-                    <li id="modelo">Model del Vehiculo</li>
-                    <li id="placa">Placa del Vehiculo</li>
-                    <li id="color">Color de Vehiculo</li>
-                    <li id="horaSalida">Hora de salida</li>
-                    <li id="asientos">Asientos Disponibles</li>
-                    <li id="ubicacion">Ubicacion del Vehiculo</li>
-                  </ul>
-                </div>
-                <div class="card-footer">
-                  <div class="stats">
-                    <h5 id="nombreConductor">Nombre del conductor</h5>
-                  </div>
-                  <button class="btn btn-orange pull-right">Aceptar Viaje</button>
-                </div>
-              </div>
-            </div>
-            <div class="col-xl-4 col-lg-12">
-              <div class="card card-chart">
-                <div class="card-header card-header-orange">
-                  <div class="ct-chart" id="dailySalesChart"></div>
-                </div>
-                <div class="card-body">
-                  <h4 class="card-title" id="direccion">Direccion</h4>
-                  <ul>
-                    <li id="modelo">Model del Vehiculo</li>
-                    <li id="placa">Placa del Vehiculo</li>
-                    <li id="color">Color de Vehiculo</li>
-                    <li id="horaSalida">Hora de salida</li>
-                    <li id="asientos">Asientos Disponibles</li>
-                    <li id="ubicacion">Ubicacion del Vehiculo</li>
-                  </ul>
-                </div>
-                <div class="card-footer">
-                  <div class="stats">
-                    <h5 id="nombreConductor">Nombre del conductor</h5>
-                  </div>
-                  <button class="btn btn-orange pull-right">Aceptar Viaje</button>
+                  <button id="btnCalificacionPasajero" class="btn btn-orange pull-right">Enviar Calificacion</button>
                 </div>
               </div>
             </div>
@@ -225,7 +221,7 @@
   <script src="../assets/js/signout.js"></script>
   <script src="../assets/js/preventBack.js"></script>
   <script src="../assets/js/constants.js"></script>
-  <script src="../assets/js/BuscarViaje.js"></script>
+  <script src="../assets/js/ratingPage.js"></script>
 </body>
 
 </html>

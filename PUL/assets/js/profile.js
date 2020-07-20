@@ -45,6 +45,14 @@ function getUserData(uid) {
       {
         element: document.querySelector("#email"),
         value: user.email
+      },
+      {
+        element: document.querySelector("#calificacionConductor"),
+        value: user.calification_driver + '  <span class="fa fa-car"></span>'
+      },
+      {
+        element: document.querySelector("#calificacionPasajero"),
+        value: user.calification_passenger + '  <span class="fa fa-car"></span>'
       }
     ]
 

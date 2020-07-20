@@ -99,7 +99,7 @@ auth.onAuthStateChanged(function(user) {
               let names = driver.names;
               let last_names = driver.last_names;
               let fullName = names + " " + last_names;
-              let calification_driver = driver.calification_driver;
+              let calification_driver = driver.calification_driver.toFixed(2);
               addTextToElement("nombreConductor", "Conductor: "+fullName);
               document.querySelector("#nombreConductor").appendChild(createCalificationElement(calification_driver));
           })
@@ -216,7 +216,7 @@ auth.onAuthStateChanged(function(user) {
           let names = passenger.names;
           let last_names = passenger.last_names;
           let fullName = names + " "+ last_names;
-          let calification = passenger.calification_passenger;
+          let calification = passenger.calification_passenger.toFixed(2);
 
           //Creando el elemento en la lista
           let li = document.createElement("li");

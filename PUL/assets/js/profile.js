@@ -48,11 +48,11 @@ function getUserData(uid) {
       },
       {
         element: document.querySelector("#calificacionConductor"),
-        value: user.calification_driver + '  <span class="fa fa-car"></span>'
+        value: user.calification_driver.toFixed(2) + '  <span class="fa fa-car"></span>'
       },
       {
         element: document.querySelector("#calificacionPasajero"),
-        value: user.calification_passenger + '  <span class="fa fa-car"></span>'
+        value: user.calification_passenger.toFixed(2) + '  <span class="fa fa-car"></span>'
       }
     ]
 

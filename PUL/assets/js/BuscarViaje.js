@@ -171,7 +171,7 @@ function createCardFooter(chart, driver_id, ride_id, user_id, seats, isAvailable
     userRef.get().then((doc) => {
         user = doc.data();
         let driver_name = user.names + " " + user.last_names;
-        let calification_driver = user.calification_driver;
+        let calification_driver = user.calification_driver.toFixed(2);
         console.log(driver_name);
         let title = document.createElement("h5");
         title.innerHTML = "Conductor: " + driver_name;
